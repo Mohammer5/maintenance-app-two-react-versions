@@ -15,6 +15,8 @@ import periodTypeStore from './App/periodTypeStore';
 import store from './store';
 import { loadAllColumnsPromise } from './List/columns/epics';
 
+console.log('> React.version (src/legacy/App.js)', React.version)
+
 // @TODO: Remove this!
 const origError = console.error.bind(console)
 console.error = err => {

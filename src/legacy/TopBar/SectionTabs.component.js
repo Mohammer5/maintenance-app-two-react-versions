@@ -13,7 +13,7 @@ function SectionTabs(props) {
             background: '#E4E4E4',
             width: '100%',
             zIndex: 10,
-            top: '44px',
+            top: '48px',
             flex: 1,
         },
         navButtonStyle: {

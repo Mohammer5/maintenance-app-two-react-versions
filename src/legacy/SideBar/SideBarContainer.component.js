@@ -143,7 +143,7 @@ class SideBarContainer extends React.Component {
             flex: 1,
             position: 'fixed',
             bottom: '0',
-            top: '7rem',
+            top: '96px',
         };
 
         return (

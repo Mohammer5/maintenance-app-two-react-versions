@@ -1,2 +1,1 @@
-import { createHashHistory } from 'history';
-export const history = createHashHistory();
+export { history } from './shared/history'

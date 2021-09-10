@@ -2,8 +2,12 @@
   "private": true,
   "name": "react-nesting-example-modern",
   "dependencies": {
+    "@dhis2/app-runtime": "^3.0.0",
+    "@dhis2/d2-i18n": "^1",
+    "@dhis2/ui": "^6.23.5",
     "react": "17.0.0",
     "react-dom": "17.0.0",
-    "react-router-dom": "5.2.0"
+    "react-router-dom": "5.2.0",
+    "styled-jsx": "^3.2"
   }
 }

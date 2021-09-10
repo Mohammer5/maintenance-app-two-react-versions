@@ -14,7 +14,6 @@ import { goToRoute } from '../router-utils';
 import appState, { setAppState } from './appStateStore';
 import { Provider } from 'react-redux';
 import store from '../store';
-import HeaderBar from "@dhis2/d2-ui-header-bar";
 
 import 'typeface-roboto';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
@@ -82,7 +81,6 @@ class App extends AppWithD2 {
         return (
             <Provider store={store}>
                 <div>
-                    <HeaderBar d2={this.state.d2} />
                     <SectionTabsWrap disabled={!!disableTabs} />
                     {this.state.hasSection && !hideSidebar ? (
                         <TwoPanelLayout>

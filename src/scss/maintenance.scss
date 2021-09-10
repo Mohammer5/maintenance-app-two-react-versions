@@ -22,6 +22,10 @@ html {
   font-size: 14px;
 }
 
+[data-reactroot] > div > main {
+  margin-top: 96px !important;
+}
+
 //TODO: Distribute
 //list
 .data-table {

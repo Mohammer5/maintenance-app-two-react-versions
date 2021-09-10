@@ -26,6 +26,7 @@ export default function lazyLegacyRoot(getLegacyComponent) {
     const createLegacyRoot = readModule(rendererModule, () =>
       import('../legacy/createLegacyRoot')
     ).default;
+
     const Component = readModule(componentModule, getLegacyComponent).default;
     const containerRef = useRef(null);
     const rootRef = useRef(null);

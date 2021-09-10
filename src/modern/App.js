@@ -1,17 +1,32 @@
-import React from 'react';
-import { Suspense } from 'react';
-import lazyLegacyRoot from './lazyLegacyRoot';
+import './App.css'
+import { Provider } from '@dhis2/app-runtime'
+import { HeaderBar } from '@dhis2/ui'
+import React, { Suspense } from 'react'
+import { Router } from 'react-router-dom'
+import { LegacyApp } from './LegacyApp'
+import { history } from './shared/history'
 
-// Lazy-load a component from the bundle using legacy React.
-const LegacyApp = lazyLegacyRoot(() => import('../legacy/App'));
+console.log('> React.version (src/modern/App.js)', React.version)
+
+const appConfig = {
+    baseUrl: 'https://debug.dhis2.org/dev',
+    apiVersion: 33,
+}
 
 export default function App() {
-  console.log('> React.version', React.version)
-
   return (
-    <Suspense fallback={<Spinner />}>
-      <LegacyApp />
-    </Suspense>
+    <Router history={history}>
+
+      <Provider config={appConfig}>
+        {/* modern app */ ''}
+        <HeaderBar appName="Maintenance app" />
+      </Provider>
+
+      <Suspense fallback={<Spinner />}>
+        {/* legacy app */ ''}
+        <LegacyApp />
+      </Suspense>
+    </Router>
   );
 }
 
