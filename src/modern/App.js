@@ -1,35 +1,64 @@
 import './App.css'
-import { Provider } from '@dhis2/app-runtime'
 import { HeaderBar } from '@dhis2/ui'
-import React, { Suspense } from 'react'
-import { Router } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Route } from 'react-router-dom'
+import { modernizedRoutes } from './shared'
+import { AppWrapper } from './appWrapper'
+import { Navigation } from './components'
 import { LegacyApp } from './LegacyApp'
-import { history } from './shared/history'
+import {
+    getAppDataError,
+    getAppLoading,
+    getAppReady,
+    loadAppData,
+} from './redux'
 
-console.log('> React.version (src/modern/App.js)', React.version)
+const App = () => {
+  const dispatch = useDispatch()
+  const appReady = useSelector(getAppReady)
+  const appLoading = useSelector(getAppLoading)
+  const appError = useSelector(getAppDataError)
 
-const appConfig = {
-    baseUrl: 'https://debug.dhis2.org/dev',
-    apiVersion: 33,
-}
+  useEffect(() => {
+      if (!appLoading && !appReady && !appError) {
+          dispatch(loadAppData())
+      }
+  }, [appLoading, appReady, appError, dispatch])
 
-export default function App() {
+  if (appError) {
+      return appError.toString()
+      // return <Error error={appError} />
+  }
+
+  if (!appReady) {
+      return 'Loading...'
+      // return <Loading />
+  }
+
   return (
-    <Router history={history}>
-
-      <Provider config={appConfig}>
-        {/* modern app */ ''}
+    <>
+      {/* modern app */ ''}
+      <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: 48, zIndex: 2 }}>
         <HeaderBar appName="Maintenance app" />
-      </Provider>
+        <Navigation />
+      </div>
 
-      <Suspense fallback={<Spinner />}>
-        {/* legacy app */ ''}
-        <LegacyApp />
-      </Suspense>
-    </Router>
-  );
+      <AppWrapper>
+        {modernizedRoutes.map(({ path, component }) => (
+          <Route key={path} path={path} render={component} />
+        ))}
+      </AppWrapper>
+
+      <LegacyApp />
+    </>
+  )
 }
 
-function Spinner() {
-  return null;
+export default function() {
+  return (
+    <AppWrapper>
+      <App />
+    </AppWrapper>
+  )
 }

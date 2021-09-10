@@ -16,101 +16,95 @@ import { CloneModel } from './router/CloneModel.component'
 import { GroupEditor } from './router/GroupEditor.component'
 import { OrganisationUnitSectionHierarchy } from './router/OrganisationUnitSectionHierarchy.component'
 import { SqlViewModel } from './router/SqlViewModel.component'
-import { shouldDisableTabs, shouldHideSidebar } from './shared/index.js'
+import { modernizedRoutes } from './shared'
 
 export class Router extends Component {
   render() {
     return (
-      <Route render={({ location, match }) => {
-        const { params } = match
+      <App>
+        <Switch>
+          {modernizedRoutes.map(({ path }) => (
+            <Route key={path} path={path} exact render={() => null} />
+          ))}
 
-        return (
-          <App
-            params={params}
-            hideSidebar={shouldHideSidebar(location.pathname)}
-            disableTabs={shouldDisableTabs(location.pathname)}
-          >
-            <Switch>
-              <Route
-                path="/list/all"
-                component={ListAll}
-              />
+          <Route
+            path="/list/all"
+            component={ListAll}
+          />
 
-              <Route
-                path="/list/:groupName/organisationUnit"
-                component={OrganisationUnitList}
-              />
+          <Route
+            path="/list/:groupName/organisationUnit"
+            component={OrganisationUnitList}
+          />
 
-              <Route
-                path="/list/:groupName/organisationUnitLevel"
-                component={OrganisationUnitLevels}
-              />
+          <Route
+            path="/list/:groupName/organisationUnitLevel"
+            component={OrganisationUnitLevels}
+          />
 
-              <Route
-                path="/list/:groupName/:modelType"
-                component={ListForModelType}
-              />
+          <Route
+            path="/list/:groupName/:modelType"
+            component={ListForModelType}
+          />
 
-              <Route
-                path="/list/:groupName"
-                component={ListForGroup}
-              />
+          <Route
+            path="/list/:groupName"
+            component={ListForGroup}
+          />
 
-              <Route
-                path="/edit/:groupName/organisationUnit/:modelId"
-                component={EditForOrganisationUnitModel}
-              />
+          <Route
+            path="/edit/:groupName/organisationUnit/:modelId"
+            component={EditForOrganisationUnitModel}
+          />
 
-              <Route
-                path="/edit/:groupName/optionSet/:modelId"
-                component={EditForOptionSetModel}
-              />
+          <Route
+            path="/edit/:groupName/optionSet/:modelId"
+            component={EditForOptionSetModel}
+          />
 
-              <Route
-                path="/edit/:groupName/program/:modelId"
-                component={EditForProgramModel}
-              />
+          <Route
+            path="/edit/:groupName/program/:modelId"
+            component={EditForProgramModel}
+          />
 
-              <Route
-                  path="/edit/:groupName/:modelType/:modelId/sections"
-                  component={EditForModelSections}
-              />
+          <Route
+              path="/edit/:groupName/:modelType/:modelId/sections"
+              component={EditForModelSections}
+          />
 
-              <Route
-                  path="/edit/:groupName/:modelType/:modelId/dataEntryForm"
-                  component={EditForModalDataEntryForm}
-              />
+          <Route
+              path="/edit/:groupName/:modelType/:modelId/dataEntryForm"
+              component={EditForModalDataEntryForm}
+          />
 
-              <Route
-                  path="/edit/:groupName/:modelType/:modelId"
-                  component={EditGroupModel}
-              />
+          <Route
+              path="/edit/:groupName/:modelType/:modelId"
+              component={EditGroupModel}
+          />
 
-              <Route
-                  path="/clone/:groupName/:modelType/:modelId"
-                  component={CloneModel}
-              />
+          <Route
+              path="/clone/:groupName/:modelType/:modelId"
+              component={CloneModel}
+          />
 
-              <Route
-                  path="/group-editor"
-                  component={GroupEditor}
-              />
+          <Route
+              path="/group-editor"
+              component={GroupEditor}
+          />
 
-              <Route
-                  path="/organisationUnitSection/hierarchy"
-                  component={OrganisationUnitSectionHierarchy}
-              />
+          <Route
+              path="/organisationUnitSection/hierarchy"
+              component={OrganisationUnitSectionHierarchy}
+          />
 
-              <Route
-                  path="/sqlViews/:modelId"
-                  component={SqlViewModel}
-              />
+          <Route
+              path="/sqlViews/:modelId"
+              component={SqlViewModel}
+          />
 
-              <Route render={() => <Redirect to="/list/all" />} />
-            </Switch>
-          </App>
-        )
-      }} />
+          <Route render={() => <Redirect to="/list/all" />} />
+        </Switch>
+      </App>
     )
   }
 }

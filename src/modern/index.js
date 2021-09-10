@@ -10,6 +10,8 @@ import {StrictMode} from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 
+console.log('> React.version (src/modern/App.js)', React.version)
+
 ReactDOM.render(
   <StrictMode>
     <App />

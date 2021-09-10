@@ -5,34 +5,39 @@ import SnackbarContainer from '../Snackbar/SnackbarContainer.component';
 import { getInstance } from 'd2/lib/d2';
 import AppWithD2 from 'd2-ui/lib/app/AppWithD2.component';
 import LoadingMask from '../loading-mask/LoadingMask.component';
-import SectionTabs from '../TopBar/SectionTabs.component';
-import withStateFrom from 'd2-ui/lib/component-helpers/withStateFrom';
+// import SectionTabs from '../TopBar/SectionTabs.component';
+// import withStateFrom from 'd2-ui/lib/component-helpers/withStateFrom';
 import { Observable } from 'rxjs';
 import SinglePanelLayout from 'd2-ui/lib/layout/SinglePanel.component';
 import TwoPanelLayout from 'd2-ui/lib/layout/TwoPanel.component';
-import { goToRoute } from '../router-utils';
+// import { goToRoute } from '../router-utils';
 import appState, { setAppState } from './appStateStore';
 import { Provider } from 'react-redux';
+import { withRouter } from 'react-router'
 import store from '../store';
-
+import {
+  // shouldDisableTabs,
+  shouldHideSidebar
+} from '../shared/index.js'
 import 'typeface-roboto';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
+import { modernizedRoutes } from '../shared'
 
-const sections$ = appState
-    .map(state => ({
-        sections: state.sideBar.mainSections,
-        current: state.sideBar.currentSection,
-        changeSection: (sectionName) => {
-            setAppState({
-                sideBar: Object.assign({}, state.sideBar, {
-                    currentSection: sectionName,
-                }),
-            });
-            goToRoute(`/list/${sectionName}`);
-        },
-    }));
-
-const SectionTabsWrap = withStateFrom(sections$, SectionTabs);
+// const sections$ = appState
+//     .map(state => ({
+//         sections: state.sideBar.mainSections,
+//         current: state.sideBar.currentSection,
+//         changeSection: (sectionName) => {
+//             setAppState({
+//                 sideBar: Object.assign({}, state.sideBar, {
+//                     currentSection: sectionName,
+//                 }),
+//             });
+//             goToRoute(`/list/${sectionName}`);
+//         },
+//     }));
+// 
+// const SectionTabsWrap = withStateFrom(sections$, SectionTabs);
 
 class App extends AppWithD2 {
     componentDidMount() {
@@ -63,6 +68,30 @@ class App extends AppWithD2 {
             }));
     }
 
+    componentDidUpdate(prevProps) {
+      try {
+        const curPathname = this.props.location.pathname
+        const isSectionPath = curPathname.match(/^[/]list[/][^/]+$/)
+
+        if (!isSectionPath) return
+
+        const sectionName = curPathname.match(/[/]([^/]+)$/)[1]
+        const state = appState.state
+
+        if (!state) return
+
+        if (state.sideBar.currentSection !== sectionName) {
+          setAppState({
+            sideBar: Object.assign({}, state.sideBar, {
+              currentSection: sectionName,
+            }),
+          });
+        }
+      } catch (e) {
+        console.error(e)
+      }
+    }
+
     componentWillUnmount() {
         if (super.componentWillUnmount) { super.componentWillUnmount(); }
 
@@ -72,16 +101,27 @@ class App extends AppWithD2 {
     }
 
     render() {
+        const isModernizedRoute = modernizedRoutes.find(({ path }) => {
+          return this.props.location.pathname === path
+        })
+
+        if (isModernizedRoute) {
+          return null
+        }
+
         if (!this.state.d2) {
             return (<LoadingMask />);
         }
 
-        const { params, hideSidebar, disableTabs } = this.props
+        const { match, location } = this.props
+        const { params } = match
+        const hideSidebar = shouldHideSidebar(location.pathname)
+        // const disableTabs = shouldDisableTabs(location.pathname)
 
         return (
             <Provider store={store}>
                 <div>
-                    <SectionTabsWrap disabled={!!disableTabs} />
+                    {/* <SectionTabsWrap disabled={!!disableTabs} /> */ ''}
                     {this.state.hasSection && !hideSidebar ? (
                         <TwoPanelLayout>
                             <SideBar
@@ -105,4 +145,4 @@ App.defaultProps = {
     d2: getInstance(),
 };
 
-export default App;
+export default withRouter(App);

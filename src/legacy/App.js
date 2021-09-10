@@ -20,8 +20,12 @@ console.log('> React.version (src/legacy/App.js)', React.version)
 // @TODO: Remove this!
 const origError = console.error.bind(console)
 console.error = err => {
-  if (err.match(/Warning: Unknown prop `onTouchTap` on <button> tag/)) return
-  if (err.match(/Warning: Unknown prop `tooltip` on <a> tag/)) return
+  try {
+    if (err.match(/Warning: Unknown prop `onTouchTap` on <button> tag/)) return
+    if (err.match(/Warning: Unknown prop `tooltip` on <a> tag/)) return
+  } catch (e) {
+    console.error(e)
+  }
 
   origError(err)
 }

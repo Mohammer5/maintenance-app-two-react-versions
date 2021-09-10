@@ -9,6 +9,7 @@ export class ListForGroup extends React.Component {
 
   render() {
     const { params } = this.props.match
+    console.log('render ListForGroup', params)
     return <MenuCardsForSection params={params} />
   }
 }
