@@ -8,7 +8,6 @@ export class ListAll extends React.Component {
   }
 
   render() {
-    console.log('render ListAll')
     const { params } = this.props.match
     return <MenuCardsForAllSections params={params} />
   }

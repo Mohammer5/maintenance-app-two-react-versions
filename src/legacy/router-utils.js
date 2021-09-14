@@ -1,7 +1,6 @@
 import { history } from './history'
 
 export function goToRoute(url) {
-    console.log('goToRoute', url)
     history.push(url);
 }
 

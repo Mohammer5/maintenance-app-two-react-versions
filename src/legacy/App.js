@@ -101,6 +101,7 @@ export default class App extends React.Component {
   componentDidMount() {
     getManifest('./manifest.webapp')
       .then((manifest) => {
+        // @TODO
         const baseUrl = process.env.NODE_ENV === 'production'
           ? manifest.getBaseUrl()
           : dhisDevConfig.baseUrl;
@@ -118,7 +119,6 @@ export default class App extends React.Component {
   }
 
   renderInitializing() {
-    console.log('renderInitializing');
     return (
       <MuiThemeProvider muiTheme={appTheme}>
         <LoadingMask />

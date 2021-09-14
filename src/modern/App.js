@@ -13,6 +13,7 @@ import {
     getAppReady,
     loadAppData,
 } from './redux'
+import { modernizedRoutes as modernModernizedRoutes } from './__refactoring'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -45,9 +46,19 @@ const App = () => {
       </div>
 
       <AppWrapper>
-        {modernizedRoutes.map(({ path, component }) => (
-          <Route key={path} path={path} render={component} />
-        ))}
+        {modernizedRoutes.map(({ path }) => {
+          const { component } = modernModernizedRoutes.find(
+            modernizedRoute => {
+              if (modernizedRoute.path === path) {
+                return modernizedRoute.component
+              }
+            }
+          )
+
+          return (
+            <Route key={path} path={path} component={component} />
+          )
+        })}
       </AppWrapper>
 
       <LegacyApp />

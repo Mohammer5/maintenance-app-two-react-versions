@@ -69,26 +69,22 @@ class App extends AppWithD2 {
     }
 
     componentDidUpdate(prevProps) {
-      try {
-        const curPathname = this.props.location.pathname
-        const isSectionPath = curPathname.match(/^[/]list[/][^/]+$/)
+      const curPathname = this.props.location.pathname
+      const isSectionPath = curPathname.match(/^[/]list[/][^/]+$/)
 
-        if (!isSectionPath) return
+      if (!isSectionPath) return
 
-        const sectionName = curPathname.match(/[/]([^/]+)$/)[1]
-        const state = appState.state
+      const sectionName = curPathname.match(/[/]([^/]+)$/)[1]
+      const state = appState.state
 
-        if (!state) return
+      if (!state) return
 
-        if (state.sideBar.currentSection !== sectionName) {
-          setAppState({
-            sideBar: Object.assign({}, state.sideBar, {
-              currentSection: sectionName,
-            }),
-          });
-        }
-      } catch (e) {
-        console.error(e)
+      if (state.sideBar.currentSection !== sectionName) {
+        setAppState({
+          sideBar: Object.assign({}, state.sideBar, {
+            currentSection: sectionName,
+          }),
+        });
       }
     }
 
