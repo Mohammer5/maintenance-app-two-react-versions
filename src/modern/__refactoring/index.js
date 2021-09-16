@@ -1,1 +1,3 @@
-export { modernizedRoutes } from './modernizedRoutes.js'
+export * from './appWrapper'
+export { routesToComponentsMapping } from './routesToComponentsMapping'
+export * from './LegacyApp'

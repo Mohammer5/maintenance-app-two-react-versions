@@ -2,8 +2,8 @@ import { Provider as RuntimeProvider, useDataEngine } from '@dhis2/app-runtime'
 import React, { useMemo } from 'react'
 import { Provider as ReduxProvider } from 'react-redux'
 import { Router } from 'react-router-dom'
-import { history } from '../shared/history'
-import { configureStore } from '../redux'
+import { history } from '../../shared/history'
+import { configureStore } from '../../redux'
 
 const appConfig = {
     baseUrl: 'https://debug.dhis2.org/dev',

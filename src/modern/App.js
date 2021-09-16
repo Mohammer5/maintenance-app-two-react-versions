@@ -1,21 +1,20 @@
 import './App.css'
-import { HeaderBar } from '@dhis2/ui'
+import { useConfig } from '@dhis2/app-runtime'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route } from 'react-router-dom'
 import { modernizedRoutes } from './shared'
-import { AppWrapper } from './appWrapper'
-import { Navigation } from './components'
-import { LegacyApp } from './LegacyApp'
+import { Header } from './components'
 import {
     getAppDataError,
     getAppLoading,
     getAppReady,
     loadAppData,
 } from './redux'
-import { modernizedRoutes as modernModernizedRoutes } from './__refactoring'
+import { AppWrapper, LegacyApp, routesToComponentsMapping } from './__refactoring'
 
-const App = () => {
+const AppContent = () => {
+  const config = useConfig()
   const dispatch = useDispatch()
   const appReady = useSelector(getAppReady)
   const appLoading = useSelector(getAppLoading)
@@ -29,47 +28,30 @@ const App = () => {
 
   if (appError) {
       return appError.toString()
-      // return <Error error={appError} />
   }
 
   if (!appReady) {
       return 'Loading...'
-      // return <Loading />
   }
 
   return (
     <>
-      {/* modern app */ ''}
-      <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: 48, zIndex: 2 }}>
-        <HeaderBar appName="Maintenance app" />
-        <Navigation />
-      </div>
+      <Header />
 
-      <AppWrapper>
-        {modernizedRoutes.map(({ path }) => {
-          const { component } = modernModernizedRoutes.find(
-            modernizedRoute => {
-              if (modernizedRoute.path === path) {
-                return modernizedRoute.component
-              }
-            }
-          )
+      {modernizedRoutes.map(({ path }) => {
+        const component = routesToComponentsMapping[path]
+        return <Route key={path} path={path} component={component} />
+      })}
 
-          return (
-            <Route key={path} path={path} component={component} />
-          )
-        })}
-      </AppWrapper>
-
-      <LegacyApp />
+      <LegacyApp {...config} />
     </>
   )
 }
 
-export default function() {
+export default function App() {
   return (
     <AppWrapper>
-      <App />
+      <AppContent />
     </AppWrapper>
   )
 }

@@ -17,15 +17,25 @@ import { GroupEditor } from './router/GroupEditor.component'
 import { OrganisationUnitSectionHierarchy } from './router/OrganisationUnitSectionHierarchy.component'
 import { SqlViewModel } from './router/SqlViewModel.component'
 import { modernizedRoutes } from './shared'
+import { legacyRoutes } from './legacy-routes'
 
 export class Router extends Component {
   render() {
     return (
       <App>
         <Switch>
-          {modernizedRoutes.map(({ path }) => (
-            <Route key={path} path={path} exact render={() => null} />
-          ))}
+          {modernizedRoutes.reduce(
+            (acc, { path }) => {
+              const { component, path: legacyPath } = legacyRoutes[path]
+
+              return [
+                ...acc,
+                <Route key={path} path={path} exact render={() => null} />,
+                <Route key={legacyPath} path={legacyPath} exact component={component} />
+              ]
+            },
+            []
+          )}
 
           <Route
             path="/list/all"

@@ -101,11 +101,7 @@ export default class App extends React.Component {
   componentDidMount() {
     getManifest('./manifest.webapp')
       .then((manifest) => {
-        // @TODO
-        const baseUrl = process.env.NODE_ENV === 'production'
-          ? manifest.getBaseUrl()
-          : dhisDevConfig.baseUrl;
-        config.baseUrl = `${baseUrl}/api/29`;
+        config.baseUrl = `${this.props.baseUrl}/api/29`;
         log.info(`Loading: ${manifest.name} v${manifest.version}`);
         log.info(`Built ${manifest.manifest_generated_at}`);
       })
