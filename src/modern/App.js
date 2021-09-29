@@ -1,4 +1,5 @@
 import './App.css'
+import './css/index.js'
 import { useConfig } from '@dhis2/app-runtime'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'

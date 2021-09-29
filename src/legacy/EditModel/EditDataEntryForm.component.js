@@ -18,9 +18,6 @@ import snackActions from '../Snackbar/snack.actions';
 import modelToEditStore from './modelToEditStore';
 import { goToRoute } from '../router-utils';
 
-import '../../scss/EditModel/EditDataEntryForm.scss';
-
-
 const inputPattern = /<input.*?\/>/gi;
 const dataElementCategoryOptionIdPattern = /id="(\w*?)-(\w*?)-val"/;
 const dataElementPattern = /dataelementid="(\w{11})"/;
